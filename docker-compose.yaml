@@ -1,0 +1,32 @@
+services:
+  web:
+    image: nginx:alpine
+    volumes:
+      - type: volume
+        source: misdatos
+        target: /datos
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./static
+        target: /opt/app/static
+    ports: 
+      - 80:80
+
+  database:
+    image: postgres:13
+
+    volumes:
+      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+      - "dbdata:/var/lib/posgresql/data"
+
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: de-prueba
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+  
+volumes:
+  misdatos:
+  dbdata:
